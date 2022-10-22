@@ -5,21 +5,21 @@
 
 import { HttpSetup } from 'opensearch-dashboards/public';
 import { ServerResponse } from '../../server/models/types';
-import { GetFindingsParams, GetFindingsResponse } from '../../server/models/interfaces';
+import { GetAlertsParams, GetAlertsResponse } from '../../server/models/interfaces';
 import { API } from '../../server/utils/constants';
 
-export default class FindingsService {
+export default class AlertsService {
   httpClient: HttpSetup;
 
   constructor(httpClient: HttpSetup) {
     this.httpClient = httpClient;
   }
 
-  getFindings = async (
-    detectorParams: GetFindingsParams
-  ): Promise<ServerResponse<GetFindingsResponse>> => {
+  getAlerts = async (
+    detectorParams: GetAlertsParams
+  ): Promise<ServerResponse<GetAlertsResponse>> => {
     const { detectorType, detectorId } = detectorParams;
-    let query: GetFindingsParams | {} = {};
+    let query: GetAlertsParams | {} = {};
 
     if (detectorId) {
       query = {
@@ -31,6 +31,6 @@ export default class FindingsService {
       };
     }
 
-    return await this.httpClient.get(`..${API.GET_FINDINGS}`, { query });
+    return await this.httpClient.get(`..${API.GET_ALERTS}`, { query });
   };
 }
