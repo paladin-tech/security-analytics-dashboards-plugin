@@ -6,7 +6,7 @@
 import React, { ChangeEvent, Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { EuiSpacer, EuiTitle } from '@elastic/eui';
-import { Detector, Rule } from '../../../../../../models/interfaces';
+import { Detector, PeriodSchedule, Rule } from '../../../../../../models/interfaces';
 import DetectorBasicDetailsForm from '../components/DetectorDetails';
 import DetectorDataSource from '../components/DetectorDataSource';
 import DetectorType from '../components/DetectorType';
@@ -15,6 +15,7 @@ import { EuiComboBoxOptionOption } from '@opensearch-project/oui';
 import IndexService from '../../../../../services/IndexService';
 import { MIN_NUM_DATA_SOURCES } from '../../../../Detectors/utils/constants';
 import { DetectorCreationStep } from '../../../models/types';
+import { DetectorSchedule } from '../components/DetectorSchedule/DetectorSchedule';
 
 interface DefineDetectorProps extends RouteComponentProps {
   detector: Detector;
@@ -100,8 +101,17 @@ export default class DefineDetector extends Component<DefineDetectorProps, Defin
 
   onRulesChanged = (rules: Rule[]) => {};
 
+  onDetectorScheduleChange = (schedule: PeriodSchedule) => {
+    const newDetector: Detector = {
+      ...this.props.detector,
+      schedule,
+    };
+
+    this.updateDetectorCreationState(newDetector);
+  };
+
   render() {
-    const { isEdit } = this.props;
+    const { isEdit, detector } = this.props;
     const { name, inputs, detector_type } = this.props.detector;
     const { description, indices, rules: enabledCustomRuleIds } = inputs[0].input;
 
@@ -142,6 +152,13 @@ export default class DefineDetector extends Component<DefineDetectorProps, Defin
           enabledCustomRuleIds={enabledCustomRuleIds}
           detectorType={detector_type}
           onRulesChanged={this.onRulesChanged}
+        />
+
+        <EuiSpacer size={'m'} />
+
+        <DetectorSchedule
+          detector={detector}
+          onDetectorScheduleChange={this.onDetectorScheduleChange}
         />
       </div>
     );

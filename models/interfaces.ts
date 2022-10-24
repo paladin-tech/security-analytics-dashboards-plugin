@@ -17,7 +17,7 @@ export interface Detector {
 export interface PeriodSchedule {
   period: {
     interval: number;
-    unit: 'MINUTES';
+    unit: string;
   };
 }
 
