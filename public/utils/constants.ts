@@ -80,10 +80,11 @@ export const EMPTY_DEFAULT_PERIOD_SCHEDULE: PeriodSchedule = {
 };
 
 export const EMPTY_DEFAULT_DETECTOR_INPUT: DetectorInput = {
-  input: {
+  detector_input: {
     description: '',
     indices: [],
-    rules: [],
+    pre_packaged_rules: [],
+    custom_rules: [],
   },
 };
 

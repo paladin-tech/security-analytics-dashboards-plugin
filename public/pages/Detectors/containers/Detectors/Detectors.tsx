@@ -63,7 +63,9 @@ export default class Detectors extends Component<DetectorsProps, DetectorsState>
     const res = await this.props.detectorService.getDetectors();
 
     if (res.ok) {
-      this.setState({ detectors: res.response.hits.hits.map((hit) => hit._source) });
+      this.setState({
+        detectors: res.response.hits.hits.map((hit) => ({ ...hit._source, id: hit._id })),
+      });
     }
 
     this.setState({ loadingDetectors: false });
@@ -282,7 +284,7 @@ export default class Detectors extends Component<DetectorsProps, DetectorsState>
         <EuiSpacer size={'m'} />
         <EuiInMemoryTable
           items={detectors}
-          itemId={(item: Detector) => `${item.type}:${item.name}`}
+          itemId={(item: Detector) => `${item.id}`}
           columns={columns}
           pagination={true}
           sorting={sorting}

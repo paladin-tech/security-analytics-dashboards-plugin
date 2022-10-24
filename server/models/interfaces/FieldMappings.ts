@@ -9,8 +9,8 @@ export interface GetFieldMapingsViewParams {
 }
 
 export interface GetFieldMappingViewResponse extends FieldMappingPropertyMap {
-  unmappedIndexFields: string[];
-  unmappedFieldAliases: string[];
+  unmapped_index_fields: string[];
+  unmapped_field_aliases: string[];
 }
 
 export interface CreateMappingsParams {

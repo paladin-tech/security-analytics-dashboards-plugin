@@ -11,9 +11,14 @@ import {
   RequestHandlerContext,
   ILegacyCustomClusterClient,
 } from 'opensearch-dashboards/server';
-import { CreateRuleParams, CreateRulesResponse } from '../models/interfaces';
+import {
+  CreateRuleParams,
+  CreateRulesResponse,
+  GetRulesParams,
+  GetRulesResponse,
+} from '../models/interfaces';
 import { CLIENT_RULE_METHODS } from '../utils/constants';
-import { Rules } from '../../models/interfaces';
+import { Rule } from '../../models/interfaces';
 import { ServerResponse } from '../models/types';
 
 export default class RulesService {
@@ -35,7 +40,7 @@ export default class RulesService {
     IOpenSearchDashboardsResponse<ServerResponse<CreateRulesResponse> | ResponseError>
   > => {
     try {
-      const rule = request.body as Rules;
+      const rule = request.body as Rule;
       const params: CreateRuleParams = { body: rule };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const createRuleResponse: CreateRulesResponse = await callWithRequest(
@@ -50,7 +55,7 @@ export default class RulesService {
           response: createRuleResponse,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Security Analytics - RulesService - createRule:', error);
       return response.custom({
         statusCode: 200,
@@ -64,16 +69,18 @@ export default class RulesService {
 
   getRules = async (
     _context: RequestHandlerContext,
-    request: OpenSearchDashboardsRequest,
+    request: OpenSearchDashboardsRequest<{}, GetRulesParams>,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<
-    IOpenSearchDashboardsResponse<ServerResponse<CreateRulesResponse> | ResponseError>
-  > => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetRulesResponse> | ResponseError>> => {
     try {
-      const rule = request.body as { query: Query };
-      const params: CreateRuleParams = { body: rule, pre_packaged: request.query.pre_packaged };
+      const { prePackaged } = request.query;
+      const params: GetRulesParams = {
+        prePackaged,
+        body: request.body,
+      };
+      console.log(`Making get rules req: ${params}`);
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const getRuleResponse: CreateRulesResponse = await callWithRequest(
+      const getRuleResponse: GetRulesResponse = await callWithRequest(
         CLIENT_RULE_METHODS.GET_RULES,
         params
       );
@@ -85,7 +92,7 @@ export default class RulesService {
           response: getRuleResponse,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Security Analytics - RulesService - getRules:', error);
       return response.custom({
         statusCode: 200,

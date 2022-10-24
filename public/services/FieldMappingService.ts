@@ -13,7 +13,6 @@ import {
   GetMappingsResponse,
 } from '../../server/models/interfaces';
 import { API } from '../../server/utils/constants';
-import { EXAMPLE_FIELD_MAPPINGS_RESPONSE } from '../pages/CreateDetector/components/ConfigureFieldMapping/utils/dummyData';
 import { FieldMapping } from '.././../models/interfaces';
 
 export default class FieldMappingService {
@@ -30,10 +29,6 @@ export default class FieldMappingService {
         ruleTopic,
       },
     })) as ServerResponse<GetFieldMappingViewResponse>;
-
-    if (response.ok) {
-      response.response = EXAMPLE_FIELD_MAPPINGS_RESPONSE;
-    }
 
     return response;
   };

@@ -17,10 +17,8 @@ export const getRulesColumns = (
   onActivationToggle: (item: RuleItem, active: boolean) => void
 ): EuiBasicTableColumn<RuleItem>[] => [
   {
-    field: 'ruleName',
-    name: 'Rule name',
-    render: (ruleName: string, item: RuleItem): ReactNode => (
-      <>
+    render: (item: RuleItem) => {
+      return (
         <EuiSwitch
           checked={item.active}
           onChange={(event: ActiveToggleOnChangeEvent) =>
@@ -29,15 +27,28 @@ export const getRulesColumns = (
           label={''}
           showLabel={false}
         />
-        <EuiLink onClick={() => alert('opening rule details')} style={{ marginLeft: 10 }}>
-          {ruleName}
-        </EuiLink>
-      </>
+      );
+    },
+    width: '50px',
+  },
+  {
+    field: 'name',
+    name: 'Rule name',
+    render: (ruleName: string, item: RuleItem): ReactNode => (
+      <EuiLink style={{ marginLeft: 10 }}>{ruleName}</EuiLink>
     ),
   },
   {
-    field: 'ruleType',
-    name: 'Rule Type',
+    field: 'severity',
+    name: 'Rule sverity',
+  },
+  {
+    field: 'logType',
+    name: 'Log type',
+  },
+  {
+    field: 'library',
+    name: 'Library',
   },
   {
     field: 'description',
