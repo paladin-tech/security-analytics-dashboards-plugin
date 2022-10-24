@@ -41,9 +41,11 @@ export interface RuleInfo {
   _id: string;
   _index: string;
   _primary_term: number;
-  _source: Rule & {
-    last_update_time: string;
-    quries: { value: string }[];
-  };
+  _source: RuleSource;
   _version: number;
 }
+
+export type RuleSource = Rule & {
+  last_update_time: string;
+  quries: { value: string }[];
+};
