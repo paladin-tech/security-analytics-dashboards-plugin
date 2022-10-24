@@ -13,6 +13,7 @@ import {
   EuiContextMenuPanel,
   EuiEmptyPrompt,
   EuiInMemoryTable,
+  EuiLink,
   EuiPopover,
   EuiSpacer,
   EuiText,
@@ -110,6 +111,13 @@ export default class Detectors extends Component<DetectorsProps, DetectorsState>
 
   closeActionsPopover = () => {
     this.setState({ isPopoverOpen: false });
+  };
+
+  showDetectorDetails = (detector: Detector) => {
+    this.props.history.push({
+      pathname: ROUTES.DETECTOR_DETAILS,
+      state: { detector },
+    });
   };
 
   render() {
@@ -217,7 +225,9 @@ export default class Detectors extends Component<DetectorsProps, DetectorsState>
         name: 'Detector name',
         sortable: true,
         dataType: 'string',
-        render: (name: string) => name || DEFAULT_EMPTY_DATA,
+        render: (name: string, item: Detector) => (
+          <EuiLink onClick={() => this.showDetectorDetails(item)}>{name}</EuiLink>
+        ),
       },
       {
         field: 'enabled',

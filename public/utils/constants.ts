@@ -25,6 +25,7 @@ export const ROUTES = Object.freeze({
   RULES_EDIT: '/edit-rule',
   RULES_IMPORT: '/import-rule',
   DETECTORS_CREATE: '/create-detector',
+  DETECTOR_DETAILS: '/detector-details',
 
   get LANDING_PAGE(): string {
     return this.OVERVIEW;
@@ -37,6 +38,7 @@ export const BREADCRUMBS = Object.freeze({
   FINDINGS: { text: 'Findings', href: `#${ROUTES.FINDINGS}` },
   DASHBOARDS: { text: 'Dashboards', href: `#${ROUTES.DASHBOARDS}` },
   DETECTORS: { text: 'Detectors', href: `#${ROUTES.DETECTORS}` },
+  DETECTORS_DETAILS: (name: string) => ({ text: `${name}`, href: `#${ROUTES.DETECTOR_DETAILS}` }),
   RULES: { text: 'Rules', href: `#${ROUTES.RULES}` },
   ALERTS: { text: 'Alerts', href: `#${ROUTES.ALERTS}` },
   RULES_CREATE: { text: 'Create a rule', href: `#${ROUTES.RULES_CREATE}` },
