@@ -35,6 +35,10 @@ export interface CreateMappingsResponse {
   acknowledged: boolean;
 }
 
+export interface GetMappingsParams {
+  indexName: string;
+}
+
 export interface GetMappingsResponse {
   [indexName: string]: {
     mappings: FieldMappingPropertyMap;

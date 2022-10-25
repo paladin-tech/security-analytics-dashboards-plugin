@@ -48,5 +48,5 @@ export interface RuleInfo {
 
 export type RuleSource = Rule & {
   last_update_time: string;
-  quries: { value: string }[];
+  queries: { value: string }[];
 };

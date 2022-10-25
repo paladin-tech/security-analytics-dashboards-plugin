@@ -17,6 +17,7 @@ import { getRulesColumns } from './utils/constants';
 import { RuleItemInfo, RuleItem, RulesInfoByType } from './types/interfaces';
 import { RulesService } from '../../../../../../services';
 import { RulesSharedState } from '../../../../../../models/interfaces';
+import { ruleItemInfosToItems } from '../../../../../../utils/helpers';
 
 interface DetectionRulesProps extends RouteComponentProps {
   enabledCustomRuleIds: Set<string>;
@@ -128,25 +129,6 @@ export default class DetectionRules extends Component<DetectionRulesProps, Detec
     }
   }
 
-  getRuleItems(): RuleItem[] {
-    const { detectorType } = this.props;
-    const ruleItemsInfo = this.state.rulesByRuleType[detectorType];
-
-    if (ruleItemsInfo) {
-      return ruleItemsInfo.map((itemInfo) => ({
-        id: itemInfo._id,
-        active: itemInfo.enabled,
-        description: itemInfo._source.description,
-        library: itemInfo.prePackaged ? 'Default' : 'Custom',
-        logType: detectorType,
-        name: itemInfo._source.title,
-        severity: itemInfo._source.level,
-      }));
-    }
-
-    return [];
-  }
-
   onRuleTypeClick = (selectedRuleType?: string) => {
     this.setState({
       selectedRuleType,
@@ -227,7 +209,8 @@ export default class DetectionRules extends Component<DetectionRulesProps, Detec
   };
 
   render() {
-    const ruleItems = this.getRuleItems();
+    const { detectorType } = this.props;
+    const ruleItems = ruleItemInfosToItems(detectorType, this.state.rulesByRuleType[detectorType]);
     let enabledRulesCount = 0;
     ruleItems.forEach((item) => {
       if (item.active) {
@@ -250,7 +233,7 @@ export default class DetectionRules extends Component<DetectionRulesProps, Detec
           <EuiHorizontalRule margin={'xs'} />
           <EuiInMemoryTable
             columns={getRulesColumns(this.onRuleActivationToggle)}
-            items={this.getRuleItems()}
+            items={ruleItems}
             itemId={(item: RuleItem) => `${item.name}`}
             pagination={{
               pageIndex: this.props.pageIndex,

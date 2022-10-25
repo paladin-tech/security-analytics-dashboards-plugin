@@ -18,7 +18,7 @@ import Rules from '../Rules';
 import Overview from '../Overview';
 import CreateDetector from '../CreateDetector/containers/CreateDetector';
 import Alerts from '../Alerts';
-import { DetectorDetails } from '../Detectors/containers/DetectorDetails/DetectorDetails';
+import { DetectorDetails } from '../Detectors/containers/Detector/Detector';
 
 enum Navigation {
   SecurityAnalytics = 'Security Analytics',

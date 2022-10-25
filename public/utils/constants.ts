@@ -26,6 +26,9 @@ export const ROUTES = Object.freeze({
   RULES_IMPORT: '/import-rule',
   DETECTORS_CREATE: '/create-detector',
   DETECTOR_DETAILS: '/detector-details',
+  EDIT_DETECTOR_DETAILS: '/edit-detector-details',
+  EDIT_DETECTOR_RULES: '/edit-detector-rules',
+  EDIT_FIELD_MAPPINGS: '/edit-field-mappings',
 
   get LANDING_PAGE(): string {
     return this.OVERVIEW;

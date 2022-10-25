@@ -61,8 +61,12 @@ export default class FieldMappingService {
     return (await this.httpClient.post(url, params)) as ServerResponse<CreateMappingsResponse>;
   };
 
-  getMappings = async (): Promise<ServerResponse<GetMappingsResponse>> => {
+  getMappings = async (indexName: string): Promise<ServerResponse<GetMappingsResponse>> => {
     const url = `..${API.MAPPINGS_BASE}`;
-    return (await this.httpClient.get(url)) as ServerResponse<GetMappingsResponse>;
+    return (await this.httpClient.get(url, {
+      query: {
+        indexName,
+      },
+    })) as ServerResponse<GetMappingsResponse>;
   };
 }

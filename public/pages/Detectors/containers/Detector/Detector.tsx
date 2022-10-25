@@ -11,34 +11,78 @@ import {
   EuiFlexItem,
   EuiPanel,
   EuiPopover,
+  EuiSpacer,
+  EuiTab,
+  EuiTabs,
   EuiText,
   EuiTitle,
 } from '@elastic/eui';
-import { Detector } from '../../../../../models/interfaces';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { CoreServicesContext } from '../../../../components/core_services';
 import { BREADCRUMBS } from '../../../../utils/constants';
+import { DetectorHit } from '../../../../../server/models/interfaces';
+import { DetectorDetailsView } from '../DetectorDetailsView/DetectorDetailsView';
+import { FieldMappingsView } from '../../components/FieldMappingsView/FieldMappingsView';
+import { AlertTriggersView } from '../AlertTriggersView/AlertTriggersView';
 
 export interface DetectorDetailsProps
-  extends RouteComponentProps<{}, any, { detector: Detector }> {}
+  extends RouteComponentProps<{}, any, { detectorHit: DetectorHit }> {}
 
 export interface DetectorDetailsState {
   isActionsMenuOpen: boolean;
+  selectedTabId: TabId;
+  selectedTabContent: React.ReactNode;
+}
+
+enum TabId {
+  DetectorDetails = 'detector-config-tab',
+  FieldMappings = 'field-mappings-tab',
+  AlertTriggers = 'alert-triggers-tab',
 }
 
 export class DetectorDetails extends React.Component<DetectorDetailsProps, DetectorDetailsState> {
   static contextType = CoreServicesContext;
+  private get detectorHit() {
+    return this.props.location.state.detectorHit;
+  }
+
+  private tabs = [
+    {
+      id: TabId.DetectorDetails,
+      name: 'Detector configuration',
+      content: (
+        <DetectorDetailsView
+          {...this.props}
+          detector={this.detectorHit._source}
+          enabled_time={this.detectorHit._source.enabled_time}
+          last_update_time={this.detectorHit._source.last_update_time}
+        />
+      ),
+    },
+    {
+      id: TabId.FieldMappings,
+      name: 'Field mappings',
+      content: <FieldMappingsView {...this.props} detector={this.detectorHit._source} />,
+    },
+    {
+      id: TabId.AlertTriggers,
+      name: 'Alert triggers',
+      content: <AlertTriggersView {...this.props} detector={this.detectorHit._source} />,
+    },
+  ];
 
   constructor(props: DetectorDetailsProps) {
     super(props);
     this.state = {
       isActionsMenuOpen: false,
+      selectedTabId: TabId.DetectorDetails,
+      selectedTabContent: this.tabs[0].content,
     };
   }
 
   componentDidMount(): void {
-    const { name } = this.props.location.state.detector;
+    const { name } = this.detectorHit._source;
     this.context.chrome.setBreadcrumbs([
       BREADCRUMBS.SECURITY_ANALYTICS,
       BREADCRUMBS.DETECTORS,
@@ -65,7 +109,7 @@ export class DetectorDetails extends React.Component<DetectorDetailsProps, Detec
       { name: 'View Findings', onClick: this.onViewFindingsClick },
     ];
     const { isActionsMenuOpen } = this.state;
-    const { detector } = this.props.location.state;
+    const { detectorHit: detector } = this.props.location.state;
     return [
       ...onClickActions.map((action) => (
         <EuiButton onClick={action.onClick}>{action.name}</EuiButton>
@@ -110,7 +154,7 @@ export class DetectorDetails extends React.Component<DetectorDetailsProps, Detec
               }}
               data-test-subj={'deleteButton'}
             >
-              {`${detector.enabled ? 'Stop' : 'Start'} detector`}
+              {`${detector._source.enabled ? 'Stop' : 'Start'} detector`}
             </EuiContextMenuItem>,
           ]}
         />
@@ -122,8 +166,20 @@ export class DetectorDetails extends React.Component<DetectorDetailsProps, Detec
 
   onViewFindingsClick = () => {};
 
+  renderTabs() {
+    return this.tabs.map((tab, index) => (
+      <EuiTab
+        key={index}
+        onClick={() => this.setState({ selectedTabId: tab.id, selectedTabContent: tab.content })}
+        isSelected={this.state.selectedTabId === tab.id}
+      >
+        {tab.name}
+      </EuiTab>
+    ));
+  }
+
   render() {
-    const { detector } = this.props.location.state;
+    const { _source: detector } = this.detectorHit;
 
     return (
       <EuiPanel>
@@ -156,6 +212,10 @@ export class DetectorDetails extends React.Component<DetectorDetailsProps, Detec
             </EuiFlexGroup>
           </EuiFlexItem>
         </EuiFlexGroup>
+        <EuiSpacer size="xl" />
+        <EuiTabs>{this.renderTabs()}</EuiTabs>
+        <EuiSpacer size="xl" />
+        {this.state.selectedTabContent}
       </EuiPanel>
     );
   }

@@ -158,7 +158,7 @@ export default class CreateDetector extends Component<CreateDetectorProps, Creat
           />
         );
       case DetectorCreationStep.REVIEW_CREATE:
-        return <ReviewAndCreate />;
+        return <ReviewAndCreate detector={this.state.detector} {...this.props} />;
     }
   };
 
