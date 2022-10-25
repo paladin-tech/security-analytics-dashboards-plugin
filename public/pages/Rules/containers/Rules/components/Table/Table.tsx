@@ -29,7 +29,7 @@ export const Table = () => {
 
   useEffect(() => {
     services?.ruleService
-      .getRules(true, {
+      .getRules(true /* prePackaged */, {
         from: 0,
         size: 5000,
         query: {

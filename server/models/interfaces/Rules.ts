@@ -6,7 +6,8 @@
 import { Rule } from '../../../models/interfaces';
 
 export interface CreateRuleParams {
-  body: Rule;
+  body: string;
+  category: string;
 }
 
 export interface CreateRulesResponse {

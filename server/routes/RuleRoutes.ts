@@ -23,4 +23,14 @@ export function setupRulesRoutes(services: NodeServices, router: IRouter) {
     },
     rulesService.getRules
   );
+
+  router.post(
+    {
+      path: `${API.RULES_BASE}`,
+      validate: {
+        body: schema.any(),
+      },
+    },
+    rulesService.createRule
+  );
 }

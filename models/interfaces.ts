@@ -14,6 +14,7 @@ export interface Rule {
   status: string;
   references: { value: string }[];
   author: string;
+  detection: string;
 }
 
 export interface Detector {
