@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { EuiSteps, EuiText, EuiTitle } from '@elastic/eui';
+import { EuiSteps, EuiText, EuiTitle, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { EuiButton } from '@elastic/eui';
 import { ContentPanel } from '../../../../components/ContentPanel';
 
@@ -16,6 +16,7 @@ const steps: any[] = [
             Identify security findings and threats from your log datas with curated detection rules.
           </p>
         </EuiText>
+        <br />
         <EuiButton fill>Create detector</EuiButton>
       </>
     ),
@@ -27,8 +28,15 @@ const steps: any[] = [
         <EuiText>
           <p>View</p>
         </EuiText>
-        <EuiButton fill>Dashboards</EuiButton>
-        <EuiButton>View findings</EuiButton>
+        <br />
+        <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false} wrap>
+          <EuiFlexItem grow={false}>
+            <EuiButton fill>Dashboards</EuiButton>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton>View findings</EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </>
     ),
   },
@@ -39,8 +47,15 @@ const steps: any[] = [
         <EuiText>
           <p>Create rule or fine tune existing rules that can be added to detectors.</p>
         </EuiText>
-        <EuiButton fill>Create rule</EuiButton>
-        <EuiButton>Manage rules</EuiButton>
+        <br />
+        <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false} wrap>
+          <EuiFlexItem grow={false}>
+            <EuiButton fill>Create rule</EuiButton>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton>Manage rules</EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </>
     ),
   },
@@ -69,6 +84,7 @@ export default class OverviewStart extends Component<OverviewStartProps, Overvie
               logs
             </p>
           </EuiText>
+          <br />
           <EuiSteps steps={steps} titleSize={'s'} />
         </ContentPanel>
       </>
