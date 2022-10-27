@@ -20,6 +20,7 @@ export const ROUTES = Object.freeze({
   DETECTORS: '/detectors',
   FINDINGS: '/findings',
   OVERVIEW: '/overview',
+  OVERVIEW_START: '/overview-start',
   RULES: '/rules',
   RULES_CREATE: '/create-rule',
   RULES_EDIT: '/edit-rule',

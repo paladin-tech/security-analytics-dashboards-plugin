@@ -16,6 +16,7 @@ import Findings from '../Findings';
 import Detectors from '../Detectors';
 import Rules from '../Rules';
 import Overview from '../Overview';
+import OverviewStart from '../OverviewStart';
 import CreateDetector from '../CreateDetector/containers/CreateDetector';
 import Alerts from '../Alerts';
 import { DetectorDetails } from '../Detectors/containers/Detector/Detector';
@@ -154,6 +155,10 @@ export default class Main extends Component<MainProps> {
                           render={(props: RouteComponentProps<{}, any, any>) => (
                             <DetectorDetails {...props} />
                           )}
+                        />
+                        <Route
+                          path={ROUTES.OVERVIEW_START}
+                          render={(props: RouteComponentProps) => <OverviewStart {...props} />}
                         />
                         <Redirect from={'/'} to={landingPage} />
                       </Switch>
